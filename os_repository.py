@@ -91,7 +91,7 @@ def map_item(item: Dict[str, Any]) -> Tuple:
         coords.get("latitude"),
         coords.get("longitude"),
         assinatura_assinado,
-        item,
+        json.dumps(item, ensure_ascii=False)
     )
 
 UPSERT_SQL = """
@@ -122,7 +122,7 @@ INSERT INTO ordens_servico (
   %s,%s,
   %s,%s,%s,%s,%s,%s,%s,%s,
   %s,
-  CAST(%s AS JSON), NOW()
+  %s, NOW()
 )
 ON DUPLICATE KEY UPDATE
   numero = VALUES(numero),

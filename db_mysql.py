@@ -5,7 +5,7 @@ from fastapi import HTTPException
 
 load_dotenv()
 
-MYSQL_HOST = os.getenv("MYSQL_HOST", "localhost")
+MYSQL_HOST = os.getenv("MYSQL_HOST", "10.240.0.3")
 MYSQL_PORT = int(os.getenv("MYSQL_PORT", 3306))
 MYSQL_DB = os.getenv("MYSQL_DB", "posvenda")
 MYSQL_USER = os.getenv("MYSQL_USER", "rodrigo")
@@ -22,8 +22,6 @@ def get_conn():
             autocommit=False
         )
     except mysql.connector.Error as e:
-        # mensagem amigável:
         msg = (f"Falha ao conectar no MySQL {MYSQL_HOST}:{MYSQL_PORT} "
                f"db={MYSQL_DB} user={MYSQL_USER} -> {e}")
-        print("❌", msg)
         raise HTTPException(status_code=500, detail=msg)
