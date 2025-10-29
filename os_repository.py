@@ -125,47 +125,69 @@ INSERT INTO ordens_servico (
   %s, NOW()
 )
 ON DUPLICATE KEY UPDATE
-  numero = VALUES(numero),
-  tipo   = VALUES(tipo),
-  status = VALUES(status),
-  status_servico = VALUES(status_servico),
-  id_tipo_ordem_servico = VALUES(id_tipo_ordem_servico),
-  cliente_rotulo = VALUES(cliente_rotulo),
-  servico_rotulo = VALUES(servico_rotulo),
-  endereco_instalacao_text = VALUES(endereco_instalacao_text),
-  pop = VALUES(pop),
-  descricao_abertura = VALUES(descricao_abertura),
-  descricao_servico  = VALUES(descricao_servico),
-  descricao_fechamento = VALUES(descricao_fechamento),
-  disponibilidade = VALUES(disponibilidade),
-  atendimento_protocolo = VALUES(atendimento_protocolo),
-  atendimento_id = VALUES(atendimento_id),
-  atendimento_tipo = VALUES(atendimento_tipo),
-  atendimento_status = VALUES(atendimento_status),
-  tecnico_principal_id = VALUES(tecnico_principal_id),
-  tecnico_principal_nome = VALUES(tecnico_principal_nome),
-  data_cadastro = VALUES(data_cadastro),
-  data_inicio_programado = VALUES(data_inicio_programado),
-  data_termino_programado = VALUES(data_termino_programado),
-  data_inicio_executado  = VALUES(data_inicio_executado),
-  data_termino_executado = VALUES(data_termino_executado),
-  cliente_id = VALUES(cliente_id),
-  cliente_codigo = VALUES(cliente_codigo),
-  cliente_nome = VALUES(cliente_nome),
-  telefone_primario = VALUES(telefone_primario),
-  telefone_secundario = VALUES(telefone_secundario),
-  id_cliente_servico = VALUES(id_cliente_servico),
-  servico_descricao  = VALUES(servico_descricao),
-  endereco = VALUES(endereco),
-  numero_endereco = VALUES(numero_endereco),
-  bairro = VALUES(bairro),
-  cidade = VALUES(cidade),
-  estado = VALUES(estado),
-  cep = VALUES(cep),
-  latitude = VALUES(latitude),
-  longitude = VALUES(longitude),
-  assinatura_assinado = VALUES(assinatura_assinado),
-  raw = VALUES(raw),
+  -- chaves “fortes”
+  numero                  = COALESCE(VALUES(numero), numero),
+  tipo                    = COALESCE(VALUES(tipo), tipo),
+  status                  = COALESCE(VALUES(status), status),
+
+  -- dados gerais
+  status_servico          = COALESCE(VALUES(status_servico), status_servico),
+  id_tipo_ordem_servico   = COALESCE(VALUES(id_tipo_ordem_servico), id_tipo_ordem_servico),
+  cliente_rotulo          = COALESCE(VALUES(cliente_rotulo), cliente_rotulo),
+  servico_rotulo          = COALESCE(VALUES(servico_rotulo), servico_rotulo),
+  endereco_instalacao_text= COALESCE(VALUES(endereco_instalacao_text), endereco_instalacao_text),
+  pop                     = COALESCE(VALUES(pop), pop),
+  descricao_abertura      = COALESCE(VALUES(descricao_abertura), descricao_abertura),
+  descricao_servico       = COALESCE(VALUES(descricao_servico), descricao_servico),
+  descricao_fechamento    = COALESCE(VALUES(descricao_fechamento), descricao_fechamento),
+  disponibilidade         = COALESCE(VALUES(disponibilidade), disponibilidade),
+
+  -- atendimento
+  atendimento_protocolo   = COALESCE(VALUES(atendimento_protocolo), atendimento_protocolo),
+  atendimento_id          = COALESCE(VALUES(atendimento_id), atendimento_id),
+  atendimento_tipo        = COALESCE(VALUES(atendimento_tipo), atendimento_tipo),
+  atendimento_status      = COALESCE(VALUES(atendimento_status), atendimento_status),
+
+  -- técnico
+  tecnico_principal_id    = COALESCE(VALUES(tecnico_principal_id), tecnico_principal_id),
+  tecnico_principal_nome  = COALESCE(VALUES(tecnico_principal_nome), tecnico_principal_nome),
+
+  -- datas
+  data_cadastro           = COALESCE(VALUES(data_cadastro), data_cadastro),
+  data_inicio_programado  = COALESCE(VALUES(data_inicio_programado), data_inicio_programado),
+  data_termino_programado = COALESCE(VALUES(data_termino_programado), data_termino_programado),
+  data_inicio_executado   = COALESCE(VALUES(data_inicio_executado), data_inicio_executado),
+  data_termino_executado  = COALESCE(VALUES(data_termino_executado), data_termino_executado),
+
+  -- cliente
+  cliente_id              = COALESCE(VALUES(cliente_id), cliente_id),
+  cliente_codigo          = COALESCE(VALUES(cliente_codigo), cliente_codigo),
+  cliente_nome            = COALESCE(VALUES(cliente_nome), cliente_nome),
+  telefone_primario       = COALESCE(VALUES(telefone_primario), telefone_primario),
+  telefone_secundario     = COALESCE(VALUES(telefone_secundario), telefone_secundario),
+
+  -- serviço
+  id_cliente_servico      = COALESCE(VALUES(id_cliente_servico), id_cliente_servico),
+  servico_descricao       = COALESCE(VALUES(servico_descricao), servico_descricao),
+
+  -- endereço
+  endereco                = COALESCE(VALUES(endereco), endereco),
+  numero_endereco         = COALESCE(VALUES(numero_endereco), numero_endereco),
+  bairro                  = COALESCE(VALUES(bairro), bairro),
+  cidade                  = COALESCE(VALUES(cidade), cidade),
+  estado = COALESCE(VALUES(estado), estado),
+  cep = COALESCE(VALUES(cep), cep),
+
+  -- geolocalização
+  latitude = COALESCE(VALUES(latitude), latitude),
+  longitude = COALESCE(VALUES(longitude), longitude),
+
+  -- assinatura
+  assinatura_assinado = COALESCE(VALUES(assinatura_assinado), assinatura_assinado),
+
+  -- raw sempre atualiza
+  raw = COALESCE(VALUES(raw), raw),
+
   updated_at = NOW();
 """
 
